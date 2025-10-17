@@ -1,3 +1,7 @@
+## TODO: Do more per loop, fewer loops
+## TODO: Don't increment horizintally, search
+
+
 import Utils
 import Data
 import Quotas
@@ -10,9 +14,10 @@ while True:
     Data.size = get_world_size()
     Data.crop = Quotas.pick_crop()
     Utils.set_water_level()
+    Data.DEBUG()  # Comment out to disable
 
     # Break loop if all quotas met
-    if Data.crop is None:
+    if Data.crop == None:
         print("Quotas Met")
         break
 

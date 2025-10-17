@@ -29,6 +29,8 @@ def cactus():
     SingleCactus.setup()
     SingleCactus.run()
     SingleCactus.clean_up()
+    while True:
+        do_a_flip()
 
 
 def maze():

@@ -1,5 +1,3 @@
-override = None  # Entities.Cactus # defaults to None
-
 quotas = [
     [Items.Hay, Entities.Grass, 1000000 * 1],
     [Items.Wood, Entities.Tree, 1000000 * 4],
@@ -12,8 +10,6 @@ quotas = [
 
 
 def pick_crop():
-    if override:
-        return override
     for prospect in quotas:
         if num_items(prospect[0]) < prospect[2]:
             return prospect[1]

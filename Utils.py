@@ -29,7 +29,9 @@ def goto(coords):
 def ready_for_harvest():
     if num_items(Items.Water) > 0 and get_water() < Data.water:
         use_item(Items.Water)
-    if get_entity_type() != None and can_harvest() == False:
+    if get_entity_type() == None:
+        return True
+    if can_harvest() == False and get_entity_type() != Entities.Dead_Pumpkin:
         return False
     harvest()
     return True

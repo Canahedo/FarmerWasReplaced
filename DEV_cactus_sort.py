@@ -50,12 +50,18 @@ def package_sorter(raw):
         while not (a <= b <= c):
 
             # Low swap
-            if b == c < a or a == c > b or b < a < c or b < c < a:
+            if (b == c < a) or (a == c > b) or (b < a < c) or (b < c < a):
                 a, b = b, a
                 swap(West)
 
             # High swap
-            elif a == c < b or a == b > c or a < c < b or c < a < b or c < b < a:
+            elif (
+                (a == c < b)
+                or (a == b > c)
+                or (a < c < b)
+                or (c < a < b)
+                or (c < b < a)
+            ):
                 b, c = c, b
                 swap(East)
 
