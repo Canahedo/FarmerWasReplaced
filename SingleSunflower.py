@@ -3,10 +3,9 @@ import Data
 
 
 def setup():
-	new_map = []
+	Data.map = []
 	for i in range(9):
-		new_map.append([])
-	Data.map = new_map
+		Data.map.append([])
 
 
 def run():
@@ -24,26 +23,23 @@ def run():
 def farm():
 	if Utils.ready_for_harvest() == False:
 		return
-
-	# Plant and record on map
 	Utils.prep_ground(Entities.Sunflower)
 	plant(Entities.Sunflower)
 	level = measure() - 7
-	coords = (get_pos_x(), get_pos_y())
-	Data.map[level].append(coords)
+	Data.map[level].append((get_pos_x(), get_pos_y()))
 
 
 def clean_up():
 	cut_off = 0.25  # Drone will give up with this % remaining
 	start_total = count_flowers(Data.map)
 	for i in range(8, -1, -1):
-		for coord in Data.map[i]:
+		while len(Data.map[i]) > 1:
+			coord = Data.map[i].pop(0)
+			quick_print(coord)
 			Utils.goto(coord)
 			while can_harvest() == False:
 				do_a_flip()
 			harvest()
-		Data.map[i] = []
-
 		# Stops harvesting after collecting 75% of flowers
 		if start_total * cut_off > count_flowers(Data.map):
 			return

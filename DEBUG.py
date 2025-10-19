@@ -3,16 +3,19 @@ import Data
 import Quotas
 import SingleFarmer
 
-
 ## DEBUG SETTINGS - Set to None for default
 debug_size = None
 debug_crop = Entities.Pumpkin
+debug_clear = True
 ## END OF DEBUG SETTINGS
 
 farmer_type = "single"  # "single" or "multi"
 
 while True:
-	clear()
+	if debug_clear:
+		clear()
+	else:
+		Utils.goto((0,0))
 	while can_harvest() == False:
 		do_a_flip()
 		

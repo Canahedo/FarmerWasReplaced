@@ -7,14 +7,11 @@ import SingleCactus
 
 
 def poly():
-	SinglePoly.setup()
 	SinglePoly.run()
 
 
 def pumpkin():
-	SinglePumpkin.setup()
 	SinglePumpkin.run()
-	SinglePumpkin.clean_up()
 
 
 def sunflower():

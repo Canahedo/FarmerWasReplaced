@@ -1,5 +1,3 @@
-debug = True
-
 size = 0
 crop = None
 water = 0

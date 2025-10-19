@@ -38,26 +38,26 @@ def goto(destination):
 	size = get_world_size()
 	x = [get_pos_x(), destination[0], [East, West]]
 	y = [get_pos_y(), destination[1], [North, South]]
-	
+			
 	for i in [x, y]:
 		toggle = 0
 		start = i[0]
 		to = i[1]
 		
 		# Toggles direction if "to" is West/South of "start"
-		if to < start:
+		if start > to:
 			toggle = 1
 		
 		# Direct path is shorter
 		direct_dist = abs(start - to)
 		if direct_dist < (size / 2):
 			distance = direct_dist
-		
+			
 		# Warp is shorter, toggle direction
 		else:
-			toggle = (toggle + 1) % 2
 			distance = size - max(start, to) + min(start, to)
-		
+			toggle = (toggle + 1) % 2
+			
 		# Move
 		for j in range(distance):
 			move(i[2][toggle])
@@ -73,9 +73,9 @@ def ready_for_harvest():
 		harvest()
 		return True
 	else:
+		quick_print("Skipped")
 		return False
 	
-
 
 # Tills ground if needed
 def prep_ground(crop):

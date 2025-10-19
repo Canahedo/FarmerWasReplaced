@@ -2,15 +2,8 @@ import Utils
 import Data
 
 
-def setup():
-	new_map = {}
-	for x in range(Data.size):
-		for y in range(Data.size):
-			new_map[(x, y)] = None
-	Data.map = new_map
-
-
 def run():
+	Data.map = {}
 	move_list = [North, South]
 	move_toggle = 0
 	for col in range(Data.size):
@@ -23,19 +16,20 @@ def run():
 
 
 def farm():
-	Data.tree_toggle = (Data.tree_toggle + 1) % 2
 	if Utils.ready_for_harvest() == False:
 		return
-
+	
 	# Decide what to plant
 	x, y = get_pos_x(), get_pos_y()
-	map_crop = Data.map[(x, y)]
-	if map_crop:
-		to_plant = map_crop
-	elif Data.crop == Entities.Tree:
-		wood_list = [Entities.Tree, Entities.Tree]
-		#wood_list = [Entities.Bush, Entities.Tree]
+	if (x, y) in Data.map:
+		to_plant = Data.map[(x,y)]
+		
+	#If farm is large enough, can run w/ only tree
+	elif Data.crop == Entities.Tree and Data.size <= 20:
+		Data.tree_toggle = (Data.tree_toggle + 1) % 2
+		wood_list = [Entities.Bush, Entities.Tree]
 		to_plant = wood_list[Data.tree_toggle]
+	
 	else:
 		to_plant = Data.crop
 
@@ -44,4 +38,5 @@ def farm():
 
 	# Record new companion
 	(comp_crop, comp_position) = get_companion()
-	Data.map[comp_position] = comp_crop
+	if comp_position not in Data.map:
+		Data.map[comp_position] = comp_crop
