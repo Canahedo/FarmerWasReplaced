@@ -6,6 +6,7 @@ import MultiFarmer
 
 farmer_type = "single"  # "single" or "multi"
 
+change_hat(Hats.Straw_Hat)
 while True:
 	Utils.goto([0, 0])
 	Data.size = get_world_size()
@@ -17,8 +18,10 @@ while True:
 		print("Quotas Met")
 		break
 
-	if farmer_type == "single":
+	if farmer_type == "single":			
 		SingleFarmer.run() 
 
 	else:
 		MultiFarmer.run()
+		
+	Data.prev_crop = Data.crop

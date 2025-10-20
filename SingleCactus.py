@@ -15,7 +15,7 @@ def run():
 			slice_sort(axis, col)
 			Utils.goto([(col, 0),(0, col)][axis])
 			move([East, North][axis])
-		Utils.goto((0,0))
+		Utils.goto()
 	harvest()
 
 		

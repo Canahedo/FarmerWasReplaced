@@ -5,19 +5,20 @@ import SingleFarmer
 
 ## DEBUG SETTINGS - Set to None for default
 debug_size = None
-debug_crop = Entities.Pumpkin
+debug_crop = Entities.Apple
 debug_clear = False
 ## END OF DEBUG SETTINGS
 
 farmer_type = "single"  # "single" or "multi"
 
+change_hat(Hats.Straw_Hat)
 while True:
 	if debug_clear:
 		clear()
 		while can_harvest() == False:
 			do_a_flip()
 	else:
-		Utils.goto((0,0))
+		Utils.goto()
 			
 	if debug_size == None:
 		Data.size = get_world_size()

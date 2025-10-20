@@ -4,21 +4,18 @@ import MR
 
 
 def setup():	
-	move_list = [North, South]
-	move_toggle = 0
 	Data.map = {}	
 	for col in range(Data.size):
-		for row in range(Data.size - 1):
-			farm()
-			move(move_list[move_toggle])
-		farm()
-		move(East)
-		move_toggle = (move_toggle + 1) % 2
-	Utils.goto((0,0))
+		for row in range(Data.size):
+			Data.map[(get_pos_x(), get_pos_y())] = {}
+	harvest()
 	substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
-	if num_items(Items.Weird_Substance) < substance:
-		while True:
-			do_a_flip()	
+	while num_items(Items.Weird_Substance) < substance * 300:
+		plant(Entities.Tree)
+		while not can_harvest():
+			use_item(Items.Fertilizer)
+		harvest()
+	plant(Entities.Bush)
 	use_item(Items.Weird_Substance, substance)
 
 
@@ -37,17 +34,9 @@ def just_map():
 		for row in range(Data.size - 1):
 			Data.map[(get_pos_x(), get_pos_y())] = {}
 			
-
-def check_for_treasure():
-	if get_entity_type() == Entities.Treasure:
-		harvest()
-		return True	
-	
 	
 def run():
-	while True:
-		if check_for_treasure():
-			return
+	while get_entity_type() != Entities.Treasure:
 		if can_move(MR.dirs[MR.hand]):
 			move(MR.dirs[MR.hand])
 			turn("right")
@@ -59,6 +48,7 @@ def run():
 		elif can_move(MR.dirs[MR.back]):
 			move(MR.dirs[MR.back])
 			turn("around")
+	harvest()
 		
 	
 def turn(dir): # "right", "around", or "left"

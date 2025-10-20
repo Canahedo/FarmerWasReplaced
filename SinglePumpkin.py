@@ -4,12 +4,16 @@ import Data
 
 def run():
 	Data.map = []
+	wrapless = (Data.size != get_world_size())
 	for col in range(Data.size):	
 		for row in range(Data.size):
 			farm()
 			move(North)
 		clean_up()
+		if wrapless:
+			Utils.goto((col,0))
 		move(East)
+	Utils.goto()
 	harvest()
 
 
@@ -41,3 +45,6 @@ def clean_up():
 		Utils.goto(prospect)
 		if not check_pumpkin():
 			Data.map.append(prospect)
+
+		
+	

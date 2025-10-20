@@ -29,7 +29,7 @@ def direct_flight(coords):
 
 # Travel to coordinate
 # Accepts a tuple (x,y)
-def goto(destination):
+def goto(destination = (0,0)):
 	# Used when warp unavailable
 	if Data.size != get_world_size():
 		direct_flight(destination)
@@ -96,3 +96,24 @@ def get_sorted_list(unsorted_list):
 			holder_list.remove(value)
 			sorted_list.append(value)
 	return sorted_list
+	
+
+def poly_cleanup():
+	poly = [Entities.Grass, Entities.Tree, Entities.Carrot]
+	if Data.prev_crop not in poly:
+		return
+	move_list = [North, South]
+	move_toggle = 0
+	for col in range(Data.size):
+		for row in range(Data.size - 1):
+			harvest()
+			move(move_list[move_toggle])
+		harvest()
+		move(East)
+		move_toggle = (move_toggle + 1) % 2
+	Utils.goto()
+
+
+def wait():
+	while True:
+		do_a_flip()

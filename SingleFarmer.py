@@ -25,16 +25,18 @@ def cactus():
 
 
 def maze():
-	if get_entity_type() not in [Entities.Treasure, Entities.Hedge]:
-		SingleMaze.setup()
-	else:
-		SingleMaze.just_map()
+	Utils.poly_cleanup()
+	SingleMaze.setup()
+	SingleMaze.single()
 	SingleMaze.run()
 	
 
 def snake():
+	Utils.poly_cleanup()
 	SingleSnake.setup()
-
+	while True:
+		#SingleSnake.run()
+		SingleSnake.single()
 
 def run():
 	for plant in plant_types:
