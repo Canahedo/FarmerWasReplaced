@@ -1,11 +1,12 @@
 quotas = [
 	[Items.Hay, Entities.Grass, 1000000 * 1],
 	[Items.Wood, Entities.Tree, 1000000 * 1],
-	[Items.Carrot, Entities.Carrot, 1000000 * 20],
-	[Items.Power, Entities.Sunflower, 1000 * 7.5],
-	[Items.Pumpkin, Entities.Pumpkin, 1000000 * 5],
-	#[Items.Cactus, Entities.Cactus, 1000000 * 1],
-	#[Items.Gold, Entities.Treasure, 1000 * 1],
+	[Items.Carrot, Entities.Carrot, 1000000 * 1],
+	[Items.Power, Entities.Sunflower, 1000 * 10],
+	[Items.Pumpkin, Entities.Pumpkin, 1000000 * 1],
+	[Items.Cactus, Entities.Cactus, 1000000 * 1],
+	[Items.Gold, Entities.Treasure, 1000 * 100],
+	[Items.Bone, Entities.Apple, 1000 * 1],
 ]
 
 

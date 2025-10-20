@@ -10,25 +10,28 @@ def run():
 			move(North)
 		clean_up()
 		move(East)
+	harvest()
 
 
 def farm():
-	coords = (get_pos_x(), get_pos_y())
-	Data.map.append(coords)
-	if Utils.ready_for_harvest():
-		Utils.prep_ground(Entities.Pumpkin)
-		plant(Entities.Pumpkin)
-
+	if get_entity_type() == Entities.Pumpkin:
+		return
+	if not Utils.ready_for_planting():
+		return
+	Utils.prep_ground(Entities.Pumpkin)
+	plant(Entities.Pumpkin)
+	Utils.water()
+	Data.map.append((get_pos_x(), get_pos_y()))
+		
 
 # Checks tile for dead pumpkins and replants if needed
 def check_pumpkin():
 	pumpkin = get_entity_type()
 	if pumpkin == Entities.Pumpkin and can_harvest():
 		return True
-	if pumpkin in [Entities.Dead_Pumpkin, None]:
+	elif pumpkin in [Entities.Dead_Pumpkin, None]:
 		plant(Entities.Pumpkin)
-	if num_items(Items.Water) > 0 and get_water() < Data.water:
-		use_item(Items.Water)
+	Utils.water()
 	return False
 
 

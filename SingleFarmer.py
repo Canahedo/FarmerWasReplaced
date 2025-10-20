@@ -4,6 +4,8 @@ import SinglePoly
 import SingleSunflower
 import SinglePumpkin
 import SingleCactus
+import SingleMaze
+import SingleSnake
 
 
 def poly():
@@ -15,21 +17,23 @@ def pumpkin():
 
 
 def sunflower():
-	SingleSunflower.setup()
 	SingleSunflower.run()
-	SingleSunflower.clean_up()
 
 
 def cactus():
-	SingleCactus.setup()
 	SingleCactus.run()
-	SingleCactus.clean_up()
-	while True:
-		do_a_flip()
 
 
 def maze():
-	pass
+	if get_entity_type() not in [Entities.Treasure, Entities.Hedge]:
+		SingleMaze.setup()
+	else:
+		SingleMaze.just_map()
+	SingleMaze.run()
+	
+
+def snake():
+	SingleSnake.setup()
 
 
 def run():
@@ -44,4 +48,5 @@ plant_types = {
 	sunflower: [Entities.Sunflower],
 	cactus: [Entities.Cactus],
 	maze: [Entities.Treasure],
+	snake: [Entities.Apple],
 }

@@ -35,7 +35,6 @@ def goto(destination):
 		direct_flight(destination)
 		return
 
-	size = get_world_size()
 	x = [get_pos_x(), destination[0], [East, West]]
 	y = [get_pos_y(), destination[1], [North, South]]
 			
@@ -50,12 +49,12 @@ def goto(destination):
 		
 		# Direct path is shorter
 		direct_dist = abs(start - to)
-		if direct_dist < (size / 2):
+		if direct_dist < (Data.size / 2):
 			distance = direct_dist
 			
 		# Warp is shorter, toggle direction
 		else:
-			distance = size - max(start, to) + min(start, to)
+			distance = Data.size - max(start, to) + min(start, to)
 			toggle = (toggle + 1) % 2
 			
 		# Move
@@ -63,18 +62,18 @@ def goto(destination):
 			move(i[2][toggle])
 
 
-# Waters crops and checks for harvestability/harvests
-def ready_for_harvest():
+def water():
 	if num_items(Items.Water) > 0 and get_water() < Data.water:
 		use_item(Items.Water)
-	if get_entity_type() == None:
-		return True
-	elif can_harvest() or get_entity_type() == Entities.Dead_Pumpkin:
+		
+
+# Waters crops and checks for harvestability/harvests
+def ready_for_planting():
+	crop = get_entity_type()
+	if can_harvest() or crop in [None, Entities.Dead_Pumpkin]:
 		harvest()
 		return True
-	else:
-		quick_print("Skipped")
-		return False
+	return False
 	
 
 # Tills ground if needed

@@ -2,144 +2,80 @@ import Utils
 import Data
 
 
-def setup():
-	new_map = {}
-	for x in range(Data.size):
-		for y in range(Data.size):
-			new_map[(x, y)] = None
-	Data.map = new_map
-
-
 def run():
-	move_list = [North, South]
-	move_toggle = 0
-	for col in range(Data.size):
-		for row in range(Data.size - 1):
-			farm()
-			move(move_list[move_toggle])
-		farm()
-		move(East)
-		move_toggle = (move_toggle + 1) % 2
+	for axis in range(2):
+		for col in range(Data.size):
+			Data.map = []
+			for row in range(Data.size):
+				if axis == 0:
+					farm()
+				else:
+					Data.map.append(measure())
+				move([North, East][axis])
+			slice_sort(axis, col)
+			Utils.goto([(col, 0),(0, col)][axis])
+			move([East, North][axis])
+		Utils.goto((0,0))
+	harvest()
 
-
+		
 def farm():
-	if Utils.ready_for_harvest() == False:
+	if get_entity_type() == Entities.Cactus:
+		Data.map.append(measure())
 		return
-
-	# Plant and record on map
+	if not Utils.ready_for_planting():
+		return
 	Utils.prep_ground(Entities.Cactus)
 	plant(Entities.Cactus)
-	coords = (get_pos_x(), get_pos_y())
-	Data.map[coords] = measure()
+	Utils.water()
+	Data.map.append(measure())
 
 
-# Translate map to list matrix from dict
-def get_sliced_map(vert):
-	# Create blank list matrix
-	matrix = []
-	for col in range(Data.size):
-		matrix.append([])
-		for row in range(Data.size):
-			matrix[col].append([])
-	# Sort map points into slice matrix
-	for point in Data.map:
-		if vert:
-			(x, y) = point
-		else:
-			(y, x) = point
-		matrix[x].pop(y)
-		matrix[x].insert(y, Data.map[point])
-	return matrix
+def slice_sort(axis, col):
+	sorted_slice = Utils.get_sorted_list(Data.map)
+	while Data.map != sorted_slice:
+		low_bar, high_bar = update_bounds(sorted_slice)
+		Utils.goto([(col, low_bar),(low_bar, col)][axis])
+		for i in range(low_bar, high_bar):
+			sort(i, axis)
+			move([North, East][axis])
+		sort(high_bar, axis)
+		for i in range(high_bar, low_bar, -1):
+			sort(i, axis)
+			move([South, West][axis])
+		sort(low_bar, axis)
 
 
-def get_sorted_slices(vert):
-	turned_slices = []
-	sorted_slices = []
-	for slice in get_sliced_map(not vert):
-		turned_slices.append(Utils.get_sorted_list(slice))
+def update_bounds(sorted):
+	low, high = None, None
 	for i in range(Data.size):
-		sorted_slices.append([])
-		for j in range(Data.size):
-			sorted_slices[i].append(turned_slices[j].pop(0))
-	return sorted_slices
+		if sorted[i] != Data.map[i]:
+			low = i
+			break
+	for i in range(Data.size-1, -1, -1):
+		if sorted[i] != Data.map[i]:
+			high = i
+			break
+	if low == None:
+		pass
+	elif low < 1:
+		low = 1
+	if high == None:
+		pass
+	elif high > Data.size - 2:
+		high = Data.size - 2
+	return low, high
 
 
-# Build package to be sorted
-def slice_packager(slices, index):
-	# Prevents trying to sort edge slices
-	if index <= 0:
-		index = 1
-	elif index >= Data.size - 1:
-		index = Data.size - 2
-	# Package contains indexed slice and both neighbors
-	pkg = []
-	for i in [-1, 0, 1]:
-		pkg.append(slices[index + i])
-	return pkg, index
-
-
-def package_sorter(unsorted, slice_index):
-	new = [[], [], []]
-	sorted = True
-	# Check one chunk at a time
-	for i in range(len(unsorted[0])):
-		a, b, c = unsorted[0][i], unsorted[1][i], unsorted[2][i]
-		# Sort chunk
-		while not (a <= b <= c):
-			sorted = False
-			Utils.goto((slice_index, i))
-			# Low swap
-			if (b == c < a) or (a == c > b) or (b < a < c) or (b < c < a):
-				a, b = b, a
-				swap(West)
-			# High swap
-			elif (
-				(a == c < b)
-				or (a == b > c)
-				or (a < c < b)
-				or (c < a < b)
-				or (c < b < a)
-			):
-				b, c = c, b
-				swap(East)
-		# Add to new package
-		x = {0: a, 1: b, 2: c}
-		for j in x:
-			new[j].append(x[j])
-	if sorted == False:
-		package_sorter(new, slice_index)
-	return new
-
-
-def update_map(slices, position, sorted_pkg):
-	pkg_indexs = [position - 1, position, position + 1]
-	for i in range(3):
-		slices[pkg_indexs[i]] = sorted_pkg[i]
-		for j in range(len(sorted_pkg[0])):
-			Data.map[(pkg_indexs[i], j)] = sorted_pkg[i][j]
-	return slices
-
-
-def sort_loop(slices, mode):
-	plans = [range(1, Data.size - 1, 1), range(Data.size - 2, 0, -1)]
-	if mode == 3:
-		plan = plans[(random() * 100 // 1) % 2]
-	else:
-		plan = plans[mode]
-	for i in plan:
-		pkg, slice_index = slice_packager(slices, i)
-		sorted_pkg = package_sorter(pkg, slice_index)
-		if sorted_pkg != pkg:
-			slices = update_map(slices, slice_index, sorted_pkg)
-			if mode == 3:
-				return slices
-	return slices
-
-
-def clean_up(vert=True):
-	slices = get_sliced_map(vert)
-	sorted_slices = get_sorted_slices(vert)
-	sort_loop(slices, 0)
-	sort_loop(slices, 1)
-	while slices != sorted_slices:
-		sort_loop(slices, 3)
+def sort(index, axis):
+	a, b, c = Data.map[index - 1],Data.map[index],Data.map[index + 1]
+	while not a<=b<=c:
+		#Low swap
+		if b==c<a or a==c>b or b<a<c or b<c<a:
+			a, b = b, a
+			swap([South,West][axis])
+		# High swap
+		elif a==c<b	or a==b>c or a<c<b or c<a<b or c<b<a:
+			b, c = c, b
+			swap([North,East][axis])
+	Data.map[index - 1],Data.map[index],Data.map[index + 1] = a, b, c

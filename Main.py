@@ -2,6 +2,7 @@ import Utils
 import Data
 import Quotas
 import SingleFarmer
+import MultiFarmer
 
 farmer_type = "single"  # "single" or "multi"
 
@@ -20,5 +21,4 @@ while True:
 		SingleFarmer.run() 
 
 	else:
-		# TODO: Multi Drone Farm Handler
-		pass
+		MultiFarmer.run()
