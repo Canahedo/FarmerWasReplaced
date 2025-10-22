@@ -14,7 +14,7 @@ def set_water_level():
 
 # Travel to coordinate, used when warp unavailable
 # Accepts a tuple (x,y)
-def direct_flight(coords):
+def direct_flight(coords = (0,0)):
 	x, y = get_pos_x(), get_pos_y()
 	dir_x, dir_y = West, South
 	if x < coords[0]:
@@ -112,8 +112,3 @@ def poly_cleanup():
 		move(East)
 		move_toggle = (move_toggle + 1) % 2
 	Utils.goto()
-
-
-def wait():
-	while True:
-		do_a_flip()

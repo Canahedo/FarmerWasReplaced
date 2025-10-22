@@ -3,10 +3,10 @@ quotas = [
 	[Items.Wood, Entities.Tree, 1000000 * 1],
 	[Items.Carrot, Entities.Carrot, 1000000 * 1],
 	[Items.Power, Entities.Sunflower, 1000 * 10],
-	[Items.Pumpkin, Entities.Pumpkin, 1000000 * 1],
+	[Items.Pumpkin, Entities.Pumpkin, 1000000 * 10],
 	[Items.Cactus, Entities.Cactus, 1000000 * 1],
-	[Items.Gold, Entities.Treasure, 1000 * 100],
-	[Items.Bone, Entities.Apple, 1000 * 1],
+	[Items.Gold, Entities.Treasure, 1000000 * 100],
+	[Items.Bone, Entities.Apple, 1000000 * 200],
 ]
 
 

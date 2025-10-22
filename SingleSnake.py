@@ -8,19 +8,22 @@ def setup():
 	
 
 def run():
-	move(North)
-	move_list = [North, South]
-	move_toggle = 0
-	for col in range(Data.size):
-		for row in range(Data.size - 2):
+	while True:
+		if move(North) == False:
+			change_hat(Hats.Straw_Hat)
+			return
+		move_list = [North, South]
+		move_toggle = 0
+		for col in range(Data.size):
+			for row in range(Data.size - 2):
+				farm()
+				move(move_list[move_toggle])
 			farm()
-			move(move_list[move_toggle])
-		farm()
-		move(East)
-		move_toggle = (move_toggle + 1) % 2
-	move(South)
-	for i in range(Data.size):
-		move(West)
+			move(East)
+			move_toggle = (move_toggle + 1) % 2
+		move(South)
+		for i in range(Data.size):
+			move(West)
 	
 
 def farm():
@@ -39,5 +42,7 @@ def single():
 		move(South)
 	for i in range(x):
 		move(West)
+		
+
 
 

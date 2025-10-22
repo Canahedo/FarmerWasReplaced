@@ -1,27 +1,37 @@
 import Utils
 import Data
 import Quotas
-import SingleFarmer
-import MultiFarmer
+import Farmer
 
 farmer_type = "single"  # "single" or "multi"
+crop_override = None
+size_override = None
+leaderboard = True
 
 change_hat(Hats.Straw_Hat)
 while True:
-	Utils.goto([0, 0])
-	Data.size = get_world_size()
-	Data.crop = Quotas.pick_crop()
+	Utils.goto()
+	Data.size = size_override
+	
+	if crop_override == None:
+		Data.crop = Quotas.pick_crop()
+	else:
+		Data.crop = crop_override
+	if num_items(Items.Power) < 5000:
+		Data.crop = Entities.Sunflower
+		
+	if leaderboard:
+		Data.leaderboard = True
+	if farmer_type == "multi":			
+		Data.multi = True
+		
 	Utils.set_water_level()
 
 	# Break loop if all quotas met
 	if Data.crop == None:
 		print("Quotas Met")
 		break
-
-	if farmer_type == "single":			
-		SingleFarmer.run() 
-
-	else:
-		MultiFarmer.run()
-		
+	
+	Farmer.run()
+			
 	Data.prev_crop = Data.crop

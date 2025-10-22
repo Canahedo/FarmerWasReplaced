@@ -1,42 +1,41 @@
 import Utils
 import Data
-import SinglePoly
-import SingleSunflower
-import SinglePumpkin
-import SingleCactus
-import SingleMaze
-import SingleSnake
+import Poly
+import Sunflower
+import Pumpkin
+import Cactus
+import Maze
+import Snake
 
 
 def poly():
-	SinglePoly.run()
+	Poly.run()
 
 
 def pumpkin():
-	SinglePumpkin.run()
+	Pumpkin.run()
 
 
 def sunflower():
-	SingleSunflower.run()
+	Sunflower.run()
 
 
 def cactus():
-	SingleCactus.run()
+	Cactus.run()
 
 
 def maze():
 	Utils.poly_cleanup()
-	SingleMaze.setup()
-	SingleMaze.single()
-	SingleMaze.run()
+	Maze.setup()
+	Maze.run()
 	
 
 def snake():
 	Utils.poly_cleanup()
 	SingleSnake.setup()
-	while True:
-		#SingleSnake.run()
-		SingleSnake.single()
+	#while True:
+	SingleSnake.run()
+		#SingleSnake.single()
 
 def run():
 	for plant in plant_types:
