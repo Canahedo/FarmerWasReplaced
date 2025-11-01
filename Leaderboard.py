@@ -1,7 +1,7 @@
 import Utils
 import Data
 
-speedup = 1000000000000000000
+speedup = 99999999999999999999
 run_type = Leaderboards.Pumpkins_Single
 
 files = {
@@ -17,7 +17,7 @@ Leaderboards.Hay : "Hay",
 Leaderboards.Maze_Single : "Maze_Single",
 Leaderboards.Cactus_Single : "Cactus_Single",
 Leaderboards.Sunflowers_Single : "Sunflowers_Single",
-Leaderboards.Pumpkins_Single : "Pumpkins_Single",
+Leaderboards.Pumpkins_Single : "Pumpkins_Single-7_27",
 Leaderboards.Wood_Single : "Wood_Single",
 Leaderboards.Carrots_Single : "Carrots_Single",
 Leaderboards.Hay_Single : "Hay_Single",
